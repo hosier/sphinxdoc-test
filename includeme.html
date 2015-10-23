@@ -53,6 +53,11 @@
 things
 ideas</p>
 </div>
+<div class="section" id="bms-design">
+<h1>BMS Design<a class="headerlink" href="#bms-design" title="Permalink to this headline">¶</a></h1>
+<p>The Battery Management System  has two main IC&#8217;s on it. One
+is an ATMEGA32u4. The other is a</p>
+</div>
 <div class="section" id="bms-configuration">
 <h1>BMS Configuration<a class="headerlink" href="#bms-configuration" title="Permalink to this headline">¶</a></h1>
 <p>Here we talk about how to configure out solution to match your system</p>
@@ -72,6 +77,47 @@ for fewer cells</p>
 </div>
 <div class="section" id="spi-commands-list">
 <h2>SPI Commands List<a class="headerlink" href="#spi-commands-list" title="Permalink to this headline">¶</a></h2>
+<p>Here will be documentation of the spi reads/writes for controlling the bms chip</p>
+<p>Here is an example from arduino.cc showing sphinx&#8217;s capability  to show code snippets with highlighting</p>
+<div class="highlight-c"><div class="highlight"><pre><span class="k">const</span> <span class="kt">int</span> <span class="n">slaveSelectPin</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;</span>
+
+<span class="kt">void</span> <span class="nf">setup</span><span class="p">()</span> <span class="p">{</span>
+  <span class="c1">// set the slaveSelectPin as an output:</span>
+  <span class="n">pinMode</span><span class="p">(</span><span class="n">slaveSelectPin</span><span class="p">,</span> <span class="n">OUTPUT</span><span class="p">);</span>
+  <span class="c1">// initialize SPI:</span>
+  <span class="n">SPI</span><span class="p">.</span><span class="n">begin</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="nf">loop</span><span class="p">()</span> <span class="p">{</span>
+  <span class="c1">// go through the six channels of the digital pot:</span>
+  <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">channel</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">channel</span> <span class="o">&lt;</span> <span class="mi">6</span><span class="p">;</span> <span class="n">channel</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// change the resistance on this channel from min to max:</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">level</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">level</span> <span class="o">&lt;</span> <span class="mi">255</span><span class="p">;</span> <span class="n">level</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+      <span class="n">digitalPotWrite</span><span class="p">(</span><span class="n">channel</span><span class="p">,</span> <span class="n">level</span><span class="p">);</span>
+      <span class="n">delay</span><span class="p">(</span><span class="mi">10</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="c1">// wait a second at the top:</span>
+    <span class="n">delay</span><span class="p">(</span><span class="mi">100</span><span class="p">);</span>
+    <span class="c1">// change the resistance on this channel from max to min:</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">level</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">level</span> <span class="o">&lt;</span> <span class="mi">255</span><span class="p">;</span> <span class="n">level</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+      <span class="n">digitalPotWrite</span><span class="p">(</span><span class="n">channel</span><span class="p">,</span> <span class="mi">255</span> <span class="o">-</span> <span class="n">level</span><span class="p">);</span>
+      <span class="n">delay</span><span class="p">(</span><span class="mi">10</span><span class="p">);</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="nf">digitalPotWrite</span><span class="p">(</span><span class="kt">int</span> <span class="n">address</span><span class="p">,</span> <span class="kt">int</span> <span class="n">value</span><span class="p">)</span> <span class="p">{</span>
+  <span class="c1">// take the SS pin low to select the chip:</span>
+  <span class="n">digitalWrite</span><span class="p">(</span><span class="n">slaveSelectPin</span><span class="p">,</span> <span class="n">LOW</span><span class="p">);</span>
+  <span class="c1">//  send in the address and value via SPI:</span>
+  <span class="n">SPI</span><span class="p">.</span><span class="n">transfer</span><span class="p">(</span><span class="n">address</span><span class="p">);</span>
+  <span class="n">SPI</span><span class="p">.</span><span class="n">transfer</span><span class="p">(</span><span class="n">value</span><span class="p">);</span>
+  <span class="c1">// take the SS pin high to de-select the chip:</span>
+  <span class="n">digitalWrite</span><span class="p">(</span><span class="n">slaveSelectPin</span><span class="p">,</span> <span class="n">HIGH</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
 </div>
 </div>
 
@@ -84,6 +130,7 @@ for fewer cells</p>
   <h3><a href="index.html">Table Of Contents</a></h3>
   <ul>
 <li><a class="reference internal" href="#">Mini High Power Battery Management System Overview</a></li>
+<li><a class="reference internal" href="#bms-design">BMS Design</a></li>
 <li><a class="reference internal" href="#bms-configuration">BMS Configuration</a><ul>
 <li><a class="reference internal" href="#how-to-set-up-hardware">How to set up hardware</a></li>
 <li><a class="reference internal" href="#spi-commands-list">SPI Commands List</a></li>
