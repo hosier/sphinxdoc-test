@@ -48,7 +48,7 @@
   <div class="section" id="mini-high-power-battery-management-system-overview">
 <h1>Mini High Power Battery Management System Overview<a class="headerlink" href="#mini-high-power-battery-management-system-overview" title="Permalink to this headline">¶</a></h1>
 <p>Here is an overview of what our project is</p>
-<p>..image:: _static/images/BMSboard.jpg</p>
+<img alt="_images/BMSboard.jpg" src="_images/BMSboard.jpg" />
 <p>stuff
 things
 ideas</p>
@@ -58,6 +58,17 @@ ideas</p>
 <p>Here we talk about how to configure out solution to match your system</p>
 <div class="section" id="how-to-set-up-hardware">
 <h2>How to set up hardware<a class="headerlink" href="#how-to-set-up-hardware" title="Permalink to this headline">¶</a></h2>
+<p>The current hardware design is limited in that it requires
+minor modifications to work with different numbers of bettery
+cells. In general, the BMS chip requires that for
+configurations less than 6 cells, the highest cell on the
+battery needs to be shorted to all the cell inputs higher
+than it. There are on board jumpers to accomplish this.
+Safety is maintained by shorting the cell inputs only after
+passing
+through a fuse.</p>
+<p>todo: insert images of schematic and how to modify the board
+for fewer cells</p>
 </div>
 <div class="section" id="spi-commands-list">
 <h2>SPI Commands List<a class="headerlink" href="#spi-commands-list" title="Permalink to this headline">¶</a></h2>
